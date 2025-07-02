@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">B&amp;S Autos</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="register_title">Registrarse</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="register">Registrar</string>
+    <string name="already_have_account">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="hint_email">ejemplo@email.com</string>
+    <string name="hint_password">Mínimo 6 caracteres</string>
+    <string name="user_exists">El usuario ya existe</string>
+    <string name="invalid_credentials">Credenciales incorrectas</string>
+</resources>
