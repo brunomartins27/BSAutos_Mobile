@@ -5,8 +5,6 @@
 [![UX Design](https://img.shields.io/badge/UX%2FUI-Optimizado-blueviolet?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-> **Proyecto académico – Escuela Da Vinci 🇦🇷**
-
 ---
 
 ## ✨ ¿Qué es BS Autos?
