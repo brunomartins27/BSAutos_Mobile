@@ -48,15 +48,14 @@ Esto previene bloqueos en la interfaz y sigue las recomendaciones modernas de de
 Cloná o descargá el repositorio:
 
 ```sh
-Copiar
-Editar
 git clone https://github.com/brunomartins27/BSAutos_Mobile.git
+```
 Abrí el proyecto en Android Studio.
 
 Ejecutá la app en un emulador o dispositivo físico.
 
 Registrate como usuario y empezá a cargar autos en venta.
-```
+
 
 🔨 Tecnologías y herramientas
 Java 8+
