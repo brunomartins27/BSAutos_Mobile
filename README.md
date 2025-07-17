@@ -7,59 +7,63 @@
 
 ---
 
-## ✨ ¿Qué es BS Autos?
+✨ ¿Qué es BS Autos?
+BS Autos es una app Android profesional para la gestión integral de vehículos en concesionarias, pensada para modernizar la administración y agilizar el manejo de stock, ventas y control de autos en B&S Autos.
 
-**BS Autos** es una app Android profesional para la gestión integral de vehículos en concesionarias, pensada para modernizar la administración y agilizar el manejo de stock, ventas y control de autos en B&S Autos.
+La desarrollé en Java usando Android Studio, aplicando los mejores patrones de diseño mobile y siguiendo buenas prácticas de seguridad, rendimiento y experiencia de usuario.
 
-La desarrollé en **Java** usando Android Studio y los mejores patrones de diseño mobile, combinando funcionalidad, seguridad y una experiencia de usuario pulida.
+🚀 Características Destacadas
+🔒 Login y registro de usuarios
+Seguridad y validación completa (nunca se pierde un dato).
 
----
+📝 CRUD total de autos
+Alta, edición, consulta, eliminación… ¡gestioná tu stock de punta a punta!
 
-## 🚀 Características Destacadas
+🗄️ Base de datos local (SQLite)
+Toda la información se guarda offline, rápida y segura.
 
-- 🔒 **Login y registro de usuarios**  
-  Seguridad y validación completa (nunca se pierde un dato).
+⚡ Operaciones seguras y sin bloqueos
+Las operaciones con la base de datos se ejecutan en hilos (threads) separados usando ExecutorService, evitando que la app se congele y asegurando máxima fluidez.
 
-- 📝 **CRUD total de autos**  
-  Alta, edición, consulta, eliminación… ¡gestioná tu stock de punta a punta!
+🔍 Vista de detalle
+Marca, modelo, color, estado, valor, kilometraje y mucho más.
 
-- 🗄️ **Base de datos local (SQLite)**  
-  Toda la información se guarda offline, rápida y segura.
+💸 Moneda local
+Todos los valores en pesos argentinos (con campos validados).
 
-- 🔍 **Vista de detalle**  
-  Marca, modelo, año, color, estado, valor, kilometraje y mucho más.
+🎨 Interfaz intuitiva y UX optimizada
+Navegación fluida, diseño responsivo, íconos y feedback visual.
 
-- 💸 **Moneda local**  
-  Todos los valores en **pesos argentinos** (con campos validados).
+📲 Fácil de instalar, usar y expandir
+Código limpio, modular y listo para agregar nuevas funciones.
 
-- 🎨 **Interfaz intuitiva y UX optimizada**  
-  Navegación fluida, diseño responsivo, íconos y feedback visual.
+```sh
+🆕 Novedad Final: Buenas Prácticas en Base de Datos
+Todas las operaciones de acceso y manipulación de la base de datos ahora se realizan en hilos (threads) independientes mediante el uso de ExecutorService.
 
-- 📲 **Fácil de instalar, usar y expandir**  
-  Código limpio, modular y listo para agregar nuevas funciones.
+Esto previene bloqueos en la interfaz y sigue las recomendaciones modernas de desarrollo Android.
+```
 
----
+🧑‍💻 ¿Cómo usar el proyecto?
+Cloná o descargá el repositorio:
 
-## 🧑‍💻 ¿Cómo usar el proyecto?
+```sh
+Copiar
+Editar
+git clone https://github.com/brunomartins27/BSAutos_Mobile.git
+Abrí el proyecto en Android Studio.
 
-1. **Cloná o descargá el repositorio:**
-   ```sh
-   git clone https://github.com/brunomartins27/BS-Autos.git
-   
-2. Abrí el proyecto en Android Studio
+Ejecutá la app en un emulador o dispositivo físico.
 
-3. Ejecutá la app en un emulador o tu dispositivo físico.
+Registrate como usuario y empezá a cargar autos en venta.
+```
 
-4. Registrate como usuario y empezá a cargar autos en venta.
-
-
-## 🔨 Tecnologías y herramientas
-
+🔨 Tecnologías y herramientas
 Java 8+
 
 Android SDK
 
-SQLite (local database)
+SQLite (base de datos local)
 
 Material Design & UX Best Practices
 
@@ -67,8 +71,7 @@ Android Studio
 
 Git & GitHub
 
-## 🏁 Roadmap y posibles mejoras
-
+🏁 Roadmap y posibles mejoras
 Sincronización en la nube (Firebase o REST API)
 
 Notificaciones push para novedades o alertas
@@ -81,5 +84,5 @@ Gestión de usuarios administradores
 
 Integración con servicios de mapas o ubicación
 
-## 📝 Créditos
+📝 Créditos
 Autor: Bruno Martins – Dev Jr
