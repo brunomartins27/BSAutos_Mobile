@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.os.Handler;
 import android.os.Looper;
+=======
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,11 +21,18 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+<<<<<<< HEAD
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+=======
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewAutos;
     Button buttonAgregarAuto;
 
+<<<<<<< HEAD
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private Handler handler = new Handler(Looper.getMainLooper());
 
+=======
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +71,11 @@ public class MainActivity extends AppCompatActivity {
                 long autoId = idsAutos.get(position);
                 Intent intent = new Intent(MainActivity.this, AutoDetalleActivity.class);
                 intent.putExtra("AUTO_ID", autoId);
+<<<<<<< HEAD
                 startActivityForResult(intent, 1);
+=======
+                startActivityForResult(intent, 1); // Cambiado a startActivityForResult
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
             }
         });
 
@@ -79,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarAutos() {
+<<<<<<< HEAD
         executor.execute(() -> {
             listaAutos.clear();
             idsAutos.clear();
@@ -100,6 +118,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+=======
+        listaAutos.clear();
+        idsAutos.clear();
+        Cursor cursor = dbHelper.getAllAutos();
+        NumberFormat formatoPeso = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+        if (cursor.moveToFirst()) {
+            do {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_ID));
+                String marca = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MARCA));
+                String modelo = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MODELO));
+                double valor = cursor.getDouble(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_VALOR));
+                String precioFormateado = formatoPeso.format(valor);
+                listaAutos.add(marca + " " + modelo + "     " + precioFormateado);
+                idsAutos.add(id);
+            } while (cursor.moveToNext());
+        }
+        adapter.notifyDataSetChanged();
+        cursor.close();
+    }
+
+
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
     private void mostrarDialogoAgregarAuto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Agregar Auto");
@@ -126,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!marca.isEmpty() && !modelo.isEmpty() && !color.isEmpty()
                         && !estado.isEmpty() && !valorStr.isEmpty() && !kmStr.isEmpty()) {
+<<<<<<< HEAD
                     executor.execute(() -> {
                         double valor = Double.parseDouble(valorStr);
                         int km = Integer.parseInt(kmStr);
@@ -139,6 +180,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     });
+=======
+                    double valor = Double.parseDouble(valorStr);
+                    int km = Integer.parseInt(kmStr);
+                    long res = dbHelper.insertAuto(marca, modelo, color, estado, valor, km);
+                    if (res != -1) {
+                        Toast.makeText(MainActivity.this, "Auto guardado correctamente", Toast.LENGTH_SHORT).show();
+                        cargarAutos();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error al guardar auto", Toast.LENGTH_SHORT).show();
+                    }
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
                 } else {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 }
@@ -159,10 +211,15 @@ public class MainActivity extends AppCompatActivity {
                 if (which == 0) {
                     mostrarDialogoEditarAuto(idAuto, position);
                 } else if (which == 1) {
+<<<<<<< HEAD
                     executor.execute(() -> {
                         dbHelper.deleteAuto(idAuto);
                         handler.post(() -> cargarAutos());
                     });
+=======
+                    dbHelper.deleteAuto(idAuto);
+                    cargarAutos();
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
                 }
             }
         });
@@ -176,7 +233,10 @@ public class MainActivity extends AppCompatActivity {
             cargarAutos();
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
     private void mostrarDialogoEditarAuto(final long id, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Editar Auto");
@@ -189,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText inputValor = viewInflated.findViewById(R.id.inputValor);
         final EditText inputKm = viewInflated.findViewById(R.id.inputKm);
 
+<<<<<<< HEAD
         executor.execute(() -> {
             Cursor cursor = dbHelper.getAutoById(id);
             if (cursor.moveToFirst()) {
@@ -203,6 +264,18 @@ public class MainActivity extends AppCompatActivity {
             }
             cursor.close();
         });
+=======
+        Cursor cursor = dbHelper.getAutoById(id);
+        if (cursor.moveToFirst()) {
+            inputMarca.setText(cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MARCA)));
+            inputModelo.setText(cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MODELO)));
+            inputColor.setText(cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_COLOR)));
+            inputEstado.setText(cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_ESTADO)));
+            inputValor.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_VALOR))));
+            inputKm.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_KM))));
+        }
+        cursor.close();
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
 
         builder.setView(viewInflated);
 
@@ -218,12 +291,19 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!marca.isEmpty() && !modelo.isEmpty() && !color.isEmpty()
                         && !estado.isEmpty() && !valorStr.isEmpty() && !kmStr.isEmpty()) {
+<<<<<<< HEAD
                     executor.execute(() -> {
                         double valor = Double.parseDouble(valorStr);
                         int km = Integer.parseInt(kmStr);
                         dbHelper.updateAuto(id, marca, modelo, color, estado, valor, km);
                         handler.post(() -> cargarAutos());
                     });
+=======
+                    double valor = Double.parseDouble(valorStr);
+                    int km = Integer.parseInt(kmStr);
+                    dbHelper.updateAuto(id, marca, modelo, color, estado, valor, km);
+                    cargarAutos();
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
                 } else {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 }
@@ -232,10 +312,13 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", null);
         builder.show();
     }
+<<<<<<< HEAD
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         executor.shutdown();
     }
+=======
+>>>>>>> e4042048eae1e8c06d952fa015a9f2e6811f5336
 }
