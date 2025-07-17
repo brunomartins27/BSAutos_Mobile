@@ -1,8 +1,9 @@
 package com.example.bsautos;
 
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AutoDetalleActivity extends AppCompatActivity {
 
@@ -20,6 +23,9 @@ public class AutoDetalleActivity extends AppCompatActivity {
     TextView textMarcaModelo, textColor, textEstado, textValor, textKm;
     ImageView imageFotoDetalle;
     Button buttonVolver, buttonInteres, buttonEliminar;
+
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,33 +51,34 @@ public class AutoDetalleActivity extends AppCompatActivity {
             return;
         }
 
-        Cursor cursor = dbHelper.getAutoById(autoId);
-        if (cursor.moveToFirst()) {
-            String marca = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MARCA));
-            String modelo = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MODELO));
-            String color = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_COLOR));
-            String estado = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_ESTADO));
-            double valor = cursor.getDouble(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_VALOR));
-            int km = cursor.getInt(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_KM));
-            // Si usabas fotos, podrías usar este campo, si no, lo dejás
-            // String foto = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_FOTO));
+        // Carregar dados do auto em thread separada
+        executor.execute(() -> {
+            Cursor cursor = dbHelper.getAutoById(autoId);
+            if (cursor.moveToFirst()) {
+                String marca = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MARCA));
+                String modelo = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_MODELO));
+                String color = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_COLOR));
+                String estado = cursor.getString(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_ESTADO));
+                double valor = cursor.getDouble(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_VALOR));
+                int km = cursor.getInt(cursor.getColumnIndexOrThrow(UserDBHelper.COLUMN_AUTO_KM));
 
-            // Formato ARS
-            NumberFormat formatoPeso = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-            String precioFormateado = formatoPeso.format(valor);
+                NumberFormat formatoPeso = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+                String precioFormateado = formatoPeso.format(valor);
 
-            textMarcaModelo.setText(marca + " " + modelo + "");
-            textColor.setText("Color: " + color);
-            textEstado.setText("Estado: " + estado);
-            textValor.setText("Valor: " + precioFormateado);
-            textKm.setText("Kilometraje: " + km + " km");
+                handler.post(() -> {
+                    textMarcaModelo.setText(marca + " " + modelo);
+                    textColor.setText("Color: " + color);
+                    textEstado.setText("Estado: " + estado);
+                    textValor.setText("Valor: " + precioFormateado);
+                    textKm.setText("Kilometraje: " + km + " km");
 
-            // Si tu layout tiene imagen, podés setear un placeholder (opcional)
-            if (imageFotoDetalle != null) {
-                imageFotoDetalle.setImageResource(R.drawable.ic_placeholder);
+                    if (imageFotoDetalle != null) {
+                        imageFotoDetalle.setImageResource(R.drawable.ic_placeholder);
+                    }
+                });
             }
-        }
-        cursor.close();
+            cursor.close();
+        });
 
         buttonVolver.setOnClickListener(v -> finish());
 
@@ -84,16 +91,23 @@ public class AutoDetalleActivity extends AppCompatActivity {
                     .setTitle("Eliminar auto")
                     .setMessage("¿Seguro que deseas eliminar este auto?")
                     .setPositiveButton("Sí", (dialog, which) -> {
-                        dbHelper.deleteAuto(autoId);
-                        Toast.makeText(AutoDetalleActivity.this, "Auto eliminado", Toast.LENGTH_SHORT).show();
-
-                        // Indica que se eliminó un auto
-                        setResult(RESULT_OK);
-                        finish();
+                        executor.execute(() -> {
+                            dbHelper.deleteAuto(autoId);
+                            handler.post(() -> {
+                                Toast.makeText(AutoDetalleActivity.this, "Auto eliminado", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            });
+                        });
                     })
                     .setNegativeButton("No", null)
                     .show();
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown();
     }
 }
